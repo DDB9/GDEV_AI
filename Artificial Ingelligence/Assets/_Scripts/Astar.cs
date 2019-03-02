@@ -26,7 +26,8 @@ public class Astar : MonoBehaviour {
                                                           // (HashSet for better performance).
 
         openList.Add(startTile);    // Start with the first tile (Start Position).
-
+        Debug.Log(openList.Count);
+        Debug.Log(closedList.Count);
         while(openList.Count > 0) {
             Tile currentTile = openList[0];
             for (int i = 0; i < openList.Count; i++) {
@@ -39,6 +40,7 @@ public class Astar : MonoBehaviour {
             closedList.Add(currentTile);    // And add it to the closedList, so it won't be checked again.
 
             if (currentTile == targetTile) {            // If the current tile is the target tile:
+                Debug.Log("Target reached!");
                 GetFinalPath(startTile, targetTile);    // Backtrace the parents to calculate the actual path.
             }
 
@@ -75,6 +77,7 @@ public class Astar : MonoBehaviour {
         finalPath.Reverse();    // Reverses the elements in the list so it's right side first.
 
         grid.path = finalPath;  // Copies the final path list to the path list of the grid.
+        Debug.Log("Path calculated");
     }
 
     int GetManhattenDistance(Tile md_tileA, Tile md_tileB) {
