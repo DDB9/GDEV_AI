@@ -26,8 +26,6 @@ public class Astar : MonoBehaviour {
                                                           // (HashSet for better performance).
 
         openList.Add(startTile);    // Start with the first tile (Start Position).
-        Debug.Log(openList.Count);
-        Debug.Log(closedList.Count);
         while(openList.Count > 0) {
             Tile currentTile = openList[0];
             for (int i = 0; i < openList.Count; i++) {
@@ -39,9 +37,9 @@ public class Astar : MonoBehaviour {
             openList.Remove(currentTile);   // If the tile has been checked, remove it from the openList.
             closedList.Add(currentTile);    // And add it to the closedList, so it won't be checked again.
 
-            if (currentTile == targetTile) {            // If the current tile is the target tile:
-                Debug.Log("Target reached!");
+            if (currentTile == targetTile) {            // If the current tile is the target tile
                 GetFinalPath(startTile, targetTile);    // Backtrace the parents to calculate the actual path.
+                break;
             }
 
             foreach (Tile neighbour in grid.GetNeighbourTiles(currentTile))
@@ -52,7 +50,7 @@ public class Astar : MonoBehaviour {
                 }
 
                 int moveCost = currentTile.g + GetManhattenDistance(currentTile, neighbour);
-                if (moveCost < neighbour.g || !openList.Contains(neighbour)) {
+                if (!openList.Contains(neighbour) || moveCost < neighbour.f) {
                     neighbour.g = moveCost;                                     // Assigns the move cost (g);
                     neighbour.h = GetManhattenDistance(neighbour, targetTile);  // the manhatten distance to target (h);
                     neighbour.parent = currentTile;                             // and sets the current tile to the last tile's parent. 

@@ -38,7 +38,7 @@ public class TileGrid : MonoBehaviour
                     isWall = true;  //if so, set to true.
                 }
 
-                grid[y, x] = new Tile(isWall, worldPoint, x, y);  // Creating the tile as wall or not.
+                grid[x, y] = new Tile(isWall, worldPoint, x, y);  // Creating the tile as wall or not.
             }
 
         }
@@ -110,7 +110,9 @@ public class TileGrid : MonoBehaviour
                 }
 
                 if (path != null) {
-                    Gizmos.color = Color.red;     // the calculated path will be painted red.
+                    if (path.Contains(tile)) {
+                        Gizmos.color = Color.red;     // the calculated path will be painted red.
+                    }
                 }
 
                 // Draws the grid with cubes.
