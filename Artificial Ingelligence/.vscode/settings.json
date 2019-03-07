@@ -52,5 +52,8 @@
         "ProjectSettings/":true,
         "temp/":true,
         "Temp/":true
-    }
+    },
+    "editor.codeLens": false,
+    "editor.fontFamily": "Hack, Menlo, Monaco, 'Courier New', monospace",
+    "workbench.colorTheme": "Night Owl"
 }

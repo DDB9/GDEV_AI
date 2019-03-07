@@ -8,8 +8,7 @@ public class Astar : MonoBehaviour {
     TileGrid grid;  // Reference to the grid
     public Transform startPosition, targetPosition; // Start and target position
 
-    void Awake()
-    {
+    void Awake() {
         grid = GetComponent<TileGrid>();    // Assigning the grid.
     }
 
@@ -39,6 +38,7 @@ public class Astar : MonoBehaviour {
 
             if (currentTile == targetTile) {            // If the current tile is the target tile
                 GetFinalPath(startTile, targetTile);    // Backtrace the parents to calculate the actual path.
+                Debug.Log("calculating final path");
                 break;
             }
 

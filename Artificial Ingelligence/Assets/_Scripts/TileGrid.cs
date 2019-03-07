@@ -45,8 +45,8 @@ public class TileGrid : MonoBehaviour
     }
 
     public Tile TileFromWorldPosition(Vector3 t_worldPosition) {
-        float xPoint = ((t_worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x);
-        float yPoint = ((t_worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y);
+        float xPoint = ((t_worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x); // looks for the closest tile relative to the actual position.
+        float yPoint = ((t_worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y); // same here, but for the Y position.
 
         xPoint = Mathf.Clamp01(xPoint);
         yPoint = Mathf.Clamp01(yPoint);
