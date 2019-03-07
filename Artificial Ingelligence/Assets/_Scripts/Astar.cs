@@ -38,15 +38,12 @@ public class Astar : MonoBehaviour {
 
             if (currentTile == targetTile) {            // If the current tile is the target tile
                 GetFinalPath(startTile, targetTile);    // Backtrace the parents to calculate the actual path.
-                Debug.Log("calculating final path");
                 break;
             }
 
-            foreach (Tile neighbour in grid.GetNeighbourTiles(currentTile))
-            {
+            foreach (Tile neighbour in grid.GetNeighbourTiles(currentTile)) {
                 if (neighbour.isWall || closedList.Contains(neighbour)) {
-                    continue;   // Ignore the neighbour it's a wall.
-               
+                    continue;   // Ignore the neighbour if it's a wall.
                 }
 
                 int moveCost = currentTile.g + GetManhattenDistance(currentTile, neighbour);
@@ -75,7 +72,6 @@ public class Astar : MonoBehaviour {
         finalPath.Reverse();    // Reverses the elements in the list so it's right side first.
 
         grid.path = finalPath;  // Copies the final path list to the path list of the grid.
-        Debug.Log("Path calculated");
     }
 
     int GetManhattenDistance(Tile md_tileA, Tile md_tileB) {
