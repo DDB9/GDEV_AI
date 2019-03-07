@@ -19,4 +19,4 @@ public class Tile {
         xPos = T_xPos;
         yPos = T_yPos;
     }
-}
+} 
