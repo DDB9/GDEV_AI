@@ -44,7 +44,7 @@ public class Astar : MonoBehaviour {
 
             foreach (Tile neighbour in grid.GetNeighbourTiles(currentTile))
             {
-                if (!neighbour.isWall || closedList.Contains(neighbour)) {
+                if (neighbour.isWall || closedList.Contains(neighbour)) {
                     continue;   // Ignore the neighbour it's a wall.
                
                 }
