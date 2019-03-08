@@ -17,8 +17,8 @@ public class Astar : MonoBehaviour {
     }
 
     void CalculatePath(Vector3 cp_start, Vector3 cp_target) {
-        Tile startTile = grid.TileFromWorldPosition(cp_start);  // Assigning the start position.
-        Tile targetTile = grid.TileFromWorldPosition(cp_target); // Assigning the target position.
+        Tile startTile = grid.TileFromWorldPosition(cp_start);  // translate the start position to a grid tile.
+        Tile targetTile = grid.TileFromWorldPosition(cp_target); // translate the target position to a grid tile.
 
         List<Tile> openList = new List<Tile>();     // List to check for neighbours.
         HashSet<Tile> closedList = new HashSet<Tile>();   // HashSet for checked neighbours. 
@@ -47,7 +47,7 @@ public class Astar : MonoBehaviour {
                 }
 
                 int moveCost = currentTile.g + GetManhattenDistance(currentTile, neighbour);
-                if (!openList.Contains(neighbour) || moveCost < neighbour.f) {
+                if (!openList.Contains(neighbour) || moveCost < neighbour.g) {
                     neighbour.g = moveCost;                                     // Assigns the move cost (g);
                     neighbour.h = GetManhattenDistance(neighbour, targetTile);  // the manhatten distance to target (h);
                     neighbour.parent = currentTile;                             // and sets the current tile to the last tile's parent. 
@@ -76,8 +76,10 @@ public class Astar : MonoBehaviour {
 
     int GetManhattenDistance(Tile md_tileA, Tile md_tileB) {
         int ix = Mathf.Abs(md_tileA.xPos - md_tileB.xPos);  // 
-        int iy = Mathf.Abs(md_tileA.xPos - md_tileB.xPos);  // Absolute values for the movement cost.
+        int iy = Mathf.Abs(md_tileA.yPos - md_tileB.yPos);  // Absolute values for the movement cost.
 
-        return ix + iy;
+        if (ix > iy)
+            return 14 * iy + 10 * (ix - iy);
+        return 14 * ix + 10 * (iy - ix); 
     }
 }
