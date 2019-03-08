@@ -26,6 +26,7 @@ public class TileGrid : MonoBehaviour
  
     void CreateGrid() {
         grid = new Tile[gridSizeX, gridSizeY];
+
         // Finding the bottom-left corner to draw the gizmo cubes on.
         Vector3 bottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
