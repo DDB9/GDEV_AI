@@ -17,7 +17,7 @@ public class TileGrid : MonoBehaviour
     int gridSizeX, gridSizeY;
 
     void Start() {
-        nodeDiameter = nodeRadius *= 2; // Size of the cubes drawn as the grid.
+        nodeDiameter = nodeRadius * 2; // Size of the cubes drawn as the grid.
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);   // X size of the Grid.
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);   // Y size of the Grid.
 
@@ -81,7 +81,7 @@ public class TileGrid : MonoBehaviour
         yCheck = n_tile.yPos - 1;       // And one to downwards.
         if (xCheck >= 0 && yCheck < gridSizeY)
         {
-            neighbourTiles.Add(grid[xCheck, yCheck]); // Add the tile to the neighbourhood.
+             neighbourTiles.Add(grid[xCheck, yCheck]); // Add the tile to the neighbourhood.
         }
 
         // Lastly, check the neighbour to the right.
@@ -95,8 +95,7 @@ public class TileGrid : MonoBehaviour
         return neighbourTiles;
     }
 
-    private void OnDrawGizmos() // Draws Gizmos in the scene view for clarification.
-    {
+    private void OnDrawGizmos() { // Draws Gizmos in the scene view for clarification.
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
         if (grid != null) {
