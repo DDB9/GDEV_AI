@@ -73,34 +73,6 @@ public class TileGrid : MonoBehaviour
                 }
             }
         }
-        // // First check the neighbour on the top...
-        // xCheck = n_tile.xPos;           // Same X position.
-        // yCheck = n_tile.yPos + 1;       // And one upwards.
-        // if (xCheck >= 0 && yCheck < gridSizeY) {
-        //     neighbourTiles.Add(grid[xCheck, yCheck]); // Add the tile to the neighbourhood.
-        // }
-
-        // // Second, check the neighbour to the left...
-        // xCheck = n_tile.xPos - 1;   // One to the left.
-        // yCheck = n_tile.yPos;       // And same Y position.
-        // if (xCheck >= 0 && yCheck < gridSizeY) {
-        //     neighbourTiles.Add(grid[xCheck, yCheck]); // Add the tile to the neighbourhood.
-        // }
-
-        // // Third, check the neighbour at the bottom...
-        // xCheck = n_tile.xPos;           // Same X position.
-        // yCheck = n_tile.yPos - 1;       // And one to downwards.
-        // if (xCheck >= 0 && yCheck < gridSizeY) {
-        //      neighbourTiles.Add(grid[xCheck, yCheck]); // Add the tile to the neighbourhood.
-        // }
-
-        // // Lastly, check the neighbour to the right.
-        // xCheck = n_tile.xPos + 1;   // One to the right.
-        // yCheck = n_tile.yPos;       // And same Y position.
-        // if (xCheck >= 0 && yCheck < gridSizeY) {
-        //     neighbourTiles.Add(grid[xCheck, yCheck]); // Add the tile to the neighbourhood.
-        // }
-
         return neighbourTiles;
     }
 

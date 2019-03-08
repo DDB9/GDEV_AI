@@ -7,7 +7,7 @@ public class Tile {
 
     public bool isWall;         // Is the tile a wall?
     public Vector3 position;    // position in vector 3 space.
-    public Tile parent;         // Tiles parent for backtracing.
+    public Tile parent;         // Tile's parent for backtracing.
 
     public int g, h;            // G and H cost for the tile. G = distance travelled.. H = estimate distance to target.
     public int f { get { return g + h; } }  // F cost for the tile calculated as shown. 
