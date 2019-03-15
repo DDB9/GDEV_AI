@@ -7,18 +7,13 @@ using UnityEngine;
 
 public class Astar : MonoBehaviour {
 
-    PathRequestManager requestManager;
-    TileGrid grid;  // Reference to the grid
-    //public Transform startPosition, targetPosition; // Start and target position
+    PathRequestManager requestManager;      // Reference to the path request manager.
+    TileGrid grid;                          // Reference to the grid
 
     void Awake() {
         requestManager = GetComponent<PathRequestManager>();
         grid = GetComponent<TileGrid>();    // Assigning the grid.
     }
-
-    //private void Update() {
-    //    CalculatePath(startPosition.position, targetPosition.position); // Calling the actual pathfinding class.
-    //}
 
     public void StartFindPath(Vector3 startPosition, Vector3 targetPosition) {
         StartCoroutine(CalculatePath(startPosition, targetPosition));
@@ -44,6 +39,7 @@ public class Astar : MonoBehaviour {
                         currentTile = openList[i];
                     }
                 }
+
                 openList.Remove(currentTile);   // If the tile has been checked, remove it from the openList.
                 closedList.Add(currentTile);    // And add it to the closedList, so it won't be checked again.
 

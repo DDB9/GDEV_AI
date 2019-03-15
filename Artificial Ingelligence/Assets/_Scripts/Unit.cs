@@ -8,9 +8,10 @@ public class Unit : MonoBehaviour
     public Transform targetHome;
     public float speed;
     public bool hasFood;
+    public GameObject foodLoot;
 
     Vector3[] path;
-    int targetIndex; 
+    int targetIndex;
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccesful) {
         if (pathSuccesful) {
@@ -32,12 +33,24 @@ public class Unit : MonoBehaviour
                 currentWaypoint = path[targetIndex];
             }
             yield return null;  // Wait for one frame.
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed);
-            transform.LookAt(Vector3.forward);
+            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+            transform.LookAt(currentWaypoint);
         }
     }
 
     public void OnDrawGizmos() {
-        
+        if (path != null) {
+            for (int i = targetIndex; i < path.Length; i++) {
+                Gizmos.color = Color.black;
+                Gizmos.DrawCube(path[i], Vector3.one);
+
+                if (i == targetIndex) {
+                    Gizmos.DrawLine(transform.position, path[i]);
+                }
+                else {
+                    Gizmos.DrawLine(path[i - 1], path[i]);
+                }
+            }
+        }
     }
 }

@@ -22,8 +22,9 @@ public class TileGrid : MonoBehaviour {
 
         CreateGrid();   // Create the grid.
     }
- 
-    void CreateGrid() {
+
+
+    public void CreateGrid() {
         grid = new Tile[gridSizeX, gridSizeY];
 
         // Finding the bottom-left corner to draw the gizmo cubes on.
