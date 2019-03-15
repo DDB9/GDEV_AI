@@ -15,13 +15,16 @@ public class Ant : Unit {
 
     void OnTriggerEnter(Collider other) {
         Debug.Log("Food Aquired!");
+
         if (other.CompareTag("Food")) {
             other.transform.parent = this.transform;
             hasFood = true;
             PathRequestManager.RequestPath(transform.position, targetHome.position, OnPathFound);
         }
+        
         if (other.CompareTag("Home") && hasFood) {
             Destroy(this.transform.GetChild(0));
+            hasFood = false;
             // Deduct some points.
         }
     }
