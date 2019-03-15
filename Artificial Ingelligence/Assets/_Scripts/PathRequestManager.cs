@@ -6,9 +6,36 @@ using System;
 public class PathRequestManager : MonoBehaviour {
 
     Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
+    PathRequest currentPathRequest;
 
+    static PathRequestManager instance;
+
+    Astar pathfinding;
+    bool isProcessingPath;
+
+    private void Awake() {
+        instance = this;
+        pathfinding = GetComponent<Astar>();
+    }
     public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, Action<Vector3[], bool> callback) {
+        PathRequest newRequest = new PathRequest(pathStart, pathEnd, callback);
+        instance.pathRequestQueue.Enqueue(newRequest);
+        instance.TryProcessNext();
 
+    }
+
+    void TryProcessNext() {
+        if (!isProcessingPath && pathRequestQueue.Count > 0) {
+            currentPathRequest = pathRequestQueue.Dequeue();
+            isProcessingPath = true;
+            pathfinding.StartFindPath(currentPathRequest.pathStart, currentPathRequest.pathEnd);
+        }
+    }
+
+    public void FinishedProcessingPath(Vector3[] path, bool succes) {
+        currentPathRequest.callback(path, succes);
+        isProcessingPath = false;
+        TryProcessNext();
     }
 
     struct PathRequest {

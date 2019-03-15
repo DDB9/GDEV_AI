@@ -3,64 +3,82 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Class responsible for the pathfinding.
+
 public class Astar : MonoBehaviour {
 
+    PathRequestManager requestManager;
     TileGrid grid;  // Reference to the grid
-    public Transform startPosition, targetPosition; // Start and target position
+    //public Transform startPosition, targetPosition; // Start and target position
 
     void Awake() {
+        requestManager = GetComponent<PathRequestManager>();
         grid = GetComponent<TileGrid>();    // Assigning the grid.
     }
 
-    private void Update() {
-        CalculatePath(startPosition.position, targetPosition.position); // Calling the actual pathfinding class.
+    //private void Update() {
+    //    CalculatePath(startPosition.position, targetPosition.position); // Calling the actual pathfinding class.
+    //}
+
+    public void StartFindPath(Vector3 startPosition, Vector3 targetPosition) {
+        StartCoroutine(CalculatePath(startPosition, targetPosition));
     }
 
-    void CalculatePath(Vector3 cp_start, Vector3 cp_target) {
-        Tile startTile = grid.TileFromWorldPosition(cp_start);  // translate the start position to a grid tile.
+    IEnumerator CalculatePath(Vector3 cp_start, Vector3 cp_target) {
+        Tile startTile = grid.TileFromWorldPosition(cp_start);   // translate the start position to a grid tile.
         Tile targetTile = grid.TileFromWorldPosition(cp_target); // translate the target position to a grid tile.
 
-        List<Tile> openList = new List<Tile>();     // List to check for neighbours.
+        List<Tile> openList = new List<Tile>();           // List to check for neighbours.
         HashSet<Tile> closedList = new HashSet<Tile>();   // HashSet for checked neighbours. 
                                                           // (HashSet for better performance).
+        Vector3[] waypoints = new Vector3[0];
+        bool pathSucces = false;
 
-        openList.Add(startTile);    // Start with the first tile (Start Position).
-        while(openList.Count > 0) {
-            Tile currentTile = openList[0];
-            for (int i = 0; i < openList.Count; i++) {
-                // Check if the current node's f-cost is lower or the same as 
-                if (openList[i].f < currentTile.f || openList[i].f == currentTile.f && openList[i].h < currentTile.h) {
-                    currentTile = openList[i];
+        if (!startTile.isWall && !targetTile.isWall) {  // Only if the start and end tile are walkable initiate the pathfinding.
+            openList.Add(startTile);                    // Start with the first tile (Start Position).
+            while (openList.Count > 0) {
+                Tile currentTile = openList[0];
+                for (int i = 0; i < openList.Count; i++) {
+                    // Check if the current node's f-cost is lower or the same as 
+                    if (openList[i].f < currentTile.f || openList[i].f == currentTile.f && openList[i].h < currentTile.h) {
+                        currentTile = openList[i];
+                    }
                 }
-            }
-            openList.Remove(currentTile);   // If the tile has been checked, remove it from the openList.
-            closedList.Add(currentTile);    // And add it to the closedList, so it won't be checked again.
+                openList.Remove(currentTile);   // If the tile has been checked, remove it from the openList.
+                closedList.Add(currentTile);    // And add it to the closedList, so it won't be checked again.
 
-            if (currentTile == targetTile) {            // If the current tile is the target tile
-                GetFinalPath(startTile, targetTile);    // Backtrace the parents to calculate the actual path.
-                break;
-            }
-
-            foreach (Tile neighbour in grid.GetNeighbourTiles(currentTile)) {
-                if (neighbour.isWall || closedList.Contains(neighbour)) {
-                    continue;   // Ignore the neighbour if it's a wall.
+                if (currentTile == targetTile) {            // If the current tile is the target tile
+                    pathSucces = true;
+                    break;
                 }
 
-                int moveCost = currentTile.g + GetManhattenDistance(currentTile, neighbour);
-                if (!openList.Contains(neighbour) || moveCost < neighbour.g) {
-                    neighbour.g = moveCost;                                     // Assigns the move cost (g);
-                    neighbour.h = GetManhattenDistance(neighbour, targetTile);  // the manhatten distance to target (h);
-                    neighbour.parent = currentTile;                             // and sets the current tile to the last tile's parent. 
+                foreach (Tile neighbour in grid.GetNeighbourTiles(currentTile)) {
+                    if (neighbour.isWall || closedList.Contains(neighbour)) {
+                        continue;   // Ignore the neighbour if it's a wall.
+                    }
 
-                    if (!openList.Contains(neighbour)) {
-                        openList.Add(neighbour);    // Adds the neighbours to the openList.
+                    int moveCost = currentTile.g + GetManhattenDistance(currentTile, neighbour);
+                    if (!openList.Contains(neighbour) || moveCost < neighbour.g) {
+                        neighbour.g = moveCost;                                     // Assigns the move cost (g);
+                        neighbour.h = GetManhattenDistance(neighbour, targetTile);  // the manhatten distance to target (h);
+                        neighbour.parent = currentTile;                             // and sets the current tile to the last tile's parent. 
+
+                        if (!openList.Contains(neighbour)) {
+                            openList.Add(neighbour);    // Adds the neighbours to the openList.
+                        }
                     }
                 }
             }
+        }  
+        yield return null;  // Waits for one frame.
+        if (pathSucces) {
+            waypoints = GetFinalPath(startTile, targetTile);  // Backtrace the parents to calculate the actual path.
+
         }
+        requestManager.FinishedProcessingPath(waypoints, pathSucces);
     }
 
-    void GetFinalPath(Tile fp_startTile, Tile fp_targetTile) {
+    Vector3[] GetFinalPath(Tile fp_startTile, Tile fp_targetTile) {
         List<Tile> finalPath = new List<Tile>();    // List for the path.
         Tile currentTile = fp_targetTile;           // convert parameter to local variable.
 
@@ -69,9 +87,23 @@ public class Astar : MonoBehaviour {
             currentTile = currentTile.parent;   // Assign the currentTile variable to the current tile's parent.
         }
 
-        finalPath.Reverse();    // Reverses the elements in the list so it's right side first.
+        Vector3[] waypoints = SimplifyPath(finalPath);
+        Array.Reverse(waypoints);    // Reverses the elements in the list so it's right side first.
+        return waypoints;
+    }
 
-        grid.path = finalPath;  // Copies the final path list to the path list of the grid.
+    Vector3[] SimplifyPath(List<Tile> path) {
+        List<Vector3> waypoints = new List<Vector3>();
+        Vector2 directionOld = Vector2.zero;
+
+        for (int i = 1; i < path.Count; i++) {
+            Vector2 directionNew = new Vector2(path[i - 1].xPos - path[i].xPos, path[i - 1].yPos - path[i].yPos);
+            if (directionNew != directionOld) {
+                waypoints.Add(path[i].position);    // If this doesn't work try path[i - 1];
+            }
+            directionOld = directionNew;
+        }
+        return waypoints.ToArray();
     }
 
     int GetManhattenDistance(Tile md_tileA, Tile md_tileB) {

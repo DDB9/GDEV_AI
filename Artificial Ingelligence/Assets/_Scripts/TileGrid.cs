@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileGrid : MonoBehaviour
-{
-    public Transform startPosition;
+public class TileGrid : MonoBehaviour {
+
+    public bool displayGridGizmos;
     public LayerMask wallMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
     public float distance;
 
     Tile[,] grid;
-    public List<Tile> path;
 
     float nodeDiameter;
     int gridSizeX, gridSizeY;
 
-    void Start() {
+    void Awake() {
         nodeDiameter = nodeRadius * 2; // Size of the cubes drawn as the grid.
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);   // X size of the Grid.
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);   // Y size of the Grid.
@@ -76,21 +75,14 @@ public class TileGrid : MonoBehaviour
         return neighbourTiles;
     }
 
-    private void OnDrawGizmos() { // Draws Gizmos in the scene view for clarification.
+    // Draws Gizmos in the scene view for clarification.
+    private void OnDrawGizmos() { 
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-        if (grid != null) {
-            foreach (Tile tile in grid) {           // Paints the cubes drawn as the grid specific colors;
-                Gizmos.color = (!tile.isWall)?Color.white:Color.yellow;
-
-                if (path != null) {
-                    if (path.Contains(tile)) {
-                        Gizmos.color = Color.red;     // the calculated path will be painted red.
-                    }
-                }
-
-                // Draws the grid with cubes.
-                Gizmos.DrawCube(tile.position, Vector3.one * (nodeDiameter - distance));
+        if (grid != null && displayGridGizmos) {
+            foreach (Tile tile in grid) {                                                // Paints the cubes drawn as the grid specific colors;
+                Gizmos.color = (!tile.isWall)?Color.white:Color.yellow;                  // Colors the gizmo cubes.
+                Gizmos.DrawCube(tile.position, Vector3.one * (nodeDiameter - distance)); // Draws the grid with cubes.
             }
         }
     }
