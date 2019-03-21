@@ -55,6 +55,7 @@ public class Unit : MonoBehaviour
         }
     }
 
+    //  -------- BEHAVIOR TREE TASKS --------
     [Task]
     void RequestFoodPath() {    // Requests a path to the objective.
         if (!carrying) {
@@ -77,8 +78,13 @@ public class Unit : MonoBehaviour
     }
     [Task]
     void RequestPathHome() {    // Requests a path to the Homebase.
-        PathRequestManager.RequestPath(transform.position, targetHome.position, OnPathFound);
-        Task.current.Succeed();
+        if (carrying) {
+            PathRequestManager.RequestPath(transform.position, targetHome.position, OnPathFound);
+            Task.current.Succeed();
+        }
+        else if (!carrying) {
+            Task.current.Fail();
+        }
     }
     [Task]
     void Flee() {   // Unit Flees to a random direction.
@@ -103,6 +109,26 @@ public class Unit : MonoBehaviour
         else if (hidingSpaces.Count <= 0) {
             Task.current.Fail();
         }
+    }
+    [Task]
+    bool AntInRange() {
+        List<GameObject> deadAnts = new List<GameObject>();
+
+        Collider[] cols = Physics.OverlapBox(transform.position, Vector3.one, Quaternion.identity);
+        foreach (Collider collider in cols) {
+            if (collider.CompareTag("Dead Ant")) {
+                deadAnts.Add(collider.gameObject);
+            }
+        }
+        if (deadAnts.Count > 0) {
+            Task.current.Succeed();
+            return true;
+        }
+        if (deadAnts.Count <= 0) {
+            Task.current.Fail();
+        }
+        return false;
+
     }
 
 }
