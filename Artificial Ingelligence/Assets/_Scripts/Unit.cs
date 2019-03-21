@@ -7,7 +7,7 @@ public class Unit : MonoBehaviour
     public Transform targetFood;
     public Transform targetHome;
     public float speed;
-    public bool hasFood;
+    public bool carrying;
     public GameObject foodLoot;
 
     Vector3[] path;
