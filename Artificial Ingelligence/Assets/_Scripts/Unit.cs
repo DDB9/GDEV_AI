@@ -15,7 +15,7 @@ public class Unit : MonoBehaviour
     int targetIndex;
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccesful) {
-        if (pathSuccesful) {
+        if (pathSuccesful && this != null) {
             path = newPath;
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
