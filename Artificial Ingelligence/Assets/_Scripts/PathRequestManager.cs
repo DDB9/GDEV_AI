@@ -11,12 +11,13 @@ public class PathRequestManager : MonoBehaviour {
     static PathRequestManager instance;
 
     Astar pathfinding;
-    bool isProcessingPath;
+    public bool isProcessingPath;
 
     private void Awake() {
         instance = this;
         pathfinding = GetComponent<Astar>();
     }
+
     public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, Action<Vector3[], bool> callback) {
         PathRequest newRequest = new PathRequest(pathStart, pathEnd, callback);
         instance.pathRequestQueue.Enqueue(newRequest);

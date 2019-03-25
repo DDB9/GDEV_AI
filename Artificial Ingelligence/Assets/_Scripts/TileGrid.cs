@@ -10,7 +10,7 @@ public class TileGrid : MonoBehaviour {
     public float nodeRadius;
     public float distance;
 
-    Tile[,] grid;
+    public Tile[,] Grid { get; private set; }
 
     float nodeDiameter;
     int gridSizeX, gridSizeY;
@@ -25,7 +25,7 @@ public class TileGrid : MonoBehaviour {
 
 
     public void CreateGrid() {
-        grid = new Tile[gridSizeX, gridSizeY];
+        Grid = new Tile[gridSizeX, gridSizeY];
 
         // Finding the bottom-left corner to draw the gizmo cubes on.
         Vector3 bottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
@@ -39,9 +39,17 @@ public class TileGrid : MonoBehaviour {
                     isWall = true;  //if so, set to true.
                 }
 
-                grid[x, y] = new Tile(isWall, worldPoint, x, y);  // Creating the tile as wall or not.
+                Grid[x, y] = new Tile(isWall, worldPoint, x, y);  // Creating the tile as wall or not.
             }
 
+        }
+    }
+
+    public void Reset() {
+        foreach(var tile in Grid) {
+            tile.g = 0;
+            tile.h = 0;
+            tile.parent = null;
         }
     }
 
@@ -55,7 +63,7 @@ public class TileGrid : MonoBehaviour {
         int x = Mathf.RoundToInt((gridSizeX - 1) * xPoint); //
         int y = Mathf.RoundToInt((gridSizeY - 1) * yPoint); // Round the final answer down to an integer. 
 
-        return grid[x, y];  // Returns the tile converted from the world position.
+        return Grid[x, y];  // Returns the tile converted from the world position.
     }
 
     public List<Tile> GetNeighbourTiles(Tile n_tile) {
@@ -69,7 +77,7 @@ public class TileGrid : MonoBehaviour {
                 int yCheck = n_tile.yPos + y;
 
                 if (xCheck >= 0 && xCheck < gridSizeX && yCheck >= 0 && yCheck < gridSizeY) {
-                    neighbourTiles.Add(grid[xCheck, yCheck]);
+                    neighbourTiles.Add(Grid[xCheck, yCheck]);
                 }
             }
         }
@@ -80,8 +88,8 @@ public class TileGrid : MonoBehaviour {
     private void OnDrawGizmos() { 
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-        if (grid != null && displayGridGizmos) {
-            foreach (Tile tile in grid) {                                                // Paints the cubes drawn as the grid specific colors;
+        if (Grid != null && displayGridGizmos) {
+            foreach (Tile tile in Grid) {                                                // Paints the cubes drawn as the grid specific colors;
                 Gizmos.color = (!tile.isWall)?Color.white:Color.yellow;                  // Colors the gizmo cubes.
                 Gizmos.DrawCube(tile.position, Vector3.one * (nodeDiameter - distance)); // Draws the grid with cubes.
             }

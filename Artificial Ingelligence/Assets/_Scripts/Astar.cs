@@ -16,17 +16,21 @@ public class Astar : MonoBehaviour {
     }
 
     public void StartFindPath(Vector3 startPosition, Vector3 targetPosition) {
-        StartCoroutine(CalculatePath(startPosition, targetPosition));
+        CalculatePath(startPosition, targetPosition);
     }
 
-    IEnumerator CalculatePath(Vector3 cp_start, Vector3 cp_target) {
+    void CalculatePath(Vector3 cp_start, Vector3 cp_target) {
+        Debug.Log("Calculating Path");
+
+        grid.Reset();
+
         Tile startTile = grid.TileFromWorldPosition(cp_start);   // translate the start position to a grid tile.
         Tile targetTile = grid.TileFromWorldPosition(cp_target); // translate the target position to a grid tile.
 
         List<Tile> openList = new List<Tile>();           // List to check for neighbours.
         HashSet<Tile> closedList = new HashSet<Tile>();   // HashSet for checked neighbours. 
                                                           // (HashSet for better performance).
-        Vector3[] waypoints = new Vector3[0];
+        Vector3[] waypoints = null;
         bool pathSucces = false;
 
         if (!startTile.isWall && !targetTile.isWall) {  // Only if the start and end tile are walkable initiate the pathfinding.
@@ -35,7 +39,7 @@ public class Astar : MonoBehaviour {
                 Tile currentTile = openList[0];
                 for (int i = 0; i < openList.Count; i++) {
                     // Check if the current node's f-cost is lower or the same as 
-                    if (openList[i].f < currentTile.f || openList[i].f == currentTile.f && openList[i].h < currentTile.h) {
+                    if (openList[i].f < currentTile.f || (openList[i].f == currentTile.f && openList[i].h < currentTile.h)) {
                         currentTile = openList[i];
                     }
                 }
@@ -66,7 +70,7 @@ public class Astar : MonoBehaviour {
                 }
             }
         }  
-        yield return null;  // Waits for one frame.
+        //yield return null;  // Waits for one frame.
         if (pathSucces) {
             waypoints = GetFinalPath(startTile, targetTile);  // Backtrace the parents to calculate the actual path.
 
@@ -89,6 +93,7 @@ public class Astar : MonoBehaviour {
     }
 
     Vector3[] SimplifyPath(List<Tile> path) {
+
         List<Vector3> waypoints = new List<Vector3>();
         Vector2 directionOld = Vector2.zero;
 
@@ -106,8 +111,10 @@ public class Astar : MonoBehaviour {
         int ix = Mathf.Abs(md_tileA.xPos - md_tileB.xPos);  // 
         int iy = Mathf.Abs(md_tileA.yPos - md_tileB.yPos);  // Absolute values for the movement cost.
 
-        if (ix > iy)
-            return 14 * iy + 10 * (ix - iy);
-        return 14 * ix + 10 * (iy - ix); 
+        return ix + iy;
+
+        //if (ix > iy)
+        //    return 14 * iy + 10 * (ix - iy);
+        //return 14 * ix + 10 * (iy - ix); 
     }
 }

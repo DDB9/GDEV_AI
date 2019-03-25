@@ -13,9 +13,15 @@ public class Unit : MonoBehaviour
 
     Vector3[] path;
     int targetIndex;
+    PathRequestManager prm;
+
+    private void Awake() {
+        prm = FindObjectOfType<PathRequestManager>();
+    }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccesful) {
-        if (pathSuccesful && this != null) {
+        if (pathSuccesful) {
+            targetIndex = 0;
             path = newPath;
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
@@ -23,19 +29,21 @@ public class Unit : MonoBehaviour
     }
 
     IEnumerator FollowPath() {
-        Vector3 currentWaypoint = path[0];
+        if (prm.isProcessingPath){
+            Vector3 currentWaypoint = path[0];
 
-        while (true) {
-            if (transform.position == currentWaypoint) {
-                targetIndex++;
-                if (targetIndex >= path.Length) {
-                    yield break;
+            while (true) {
+                if (transform.position == currentWaypoint) {
+                    targetIndex++;
+                    if (targetIndex >= path.Length) {
+                        yield break;
+                    }
+                    currentWaypoint = path[targetIndex];
                 }
-                currentWaypoint = path[targetIndex];
+                yield return null;  // Wait for one frame.
+                transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+                transform.LookAt(currentWaypoint);
             }
-            yield return null;  // Wait for one frame.
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
-            transform.LookAt(currentWaypoint);
         }
     }
 
