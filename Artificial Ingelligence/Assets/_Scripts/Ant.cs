@@ -26,10 +26,8 @@ public class Ant : Unit {
             PathRequestManager.RequestPath(transform.position, targetHome.position, OnPathFound);
         }
         
-        if (other.CompareTag("Home")) {  // If the ant has arrived safely at home and has some food...
-            carrying = false;
-            foodLoot.SetActive(false);
-            PathRequestManager.RequestPath(transform.position, targetFood.position, OnPathFound);
+        if (other.CompareTag("Home") && carrying) {  // If the ant has arrived safely at home and has some food...
+            Destroy(other.gameObject);               // Ruthless smh...
             // Deduct some points.
         }
     }

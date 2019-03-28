@@ -20,8 +20,6 @@ public class Astar : MonoBehaviour {
     }
 
     void CalculatePath(Vector3 cp_start, Vector3 cp_target) {
-        Debug.Log("Calculating Path");
-
         grid.Reset();
 
         Tile startTile = grid.TileFromWorldPosition(cp_start);   // translate the start position to a grid tile.
