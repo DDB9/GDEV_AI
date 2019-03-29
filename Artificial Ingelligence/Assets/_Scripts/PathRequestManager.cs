@@ -26,7 +26,6 @@ public class PathRequestManager : MonoBehaviour {
     }
 
     void TryProcessNext() {
-        Debug.Log(isProcessingPath);
         if (!isProcessingPath && pathRequestQueue.Count > 0) {
             currentPathRequest = pathRequestQueue.Dequeue();
             isProcessingPath = true;

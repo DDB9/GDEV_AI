@@ -6,14 +6,11 @@ public class FootManager : MonoBehaviour
 {
     public Transform foot;
 
-    void Start() {
-        Cursor.visible = false;
-    }
     void Update() {
         Vector3 mouse = Input.mousePosition;
         Ray castPoint = Camera.main.ScreenPointToRay(mouse);
         RaycastHit hit;
-        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity)) {
+        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, 9)) {
             foot.transform.position = hit.point;
         }
         if (Input.GetMouseButtonDown(0)) {

@@ -1,29 +1,18 @@
 tree("Root")
-    fallback
-        tree("Fleeing")
-        tree ("Returning")
-        tree("Scavange")
-
-tree("Fleeing")
-    while inRangeOfFoot
-        sequence
-            Flee
-            Hide
-
-tree("Returning")
-    sequence
-        while isCarrying
+    race
+        while not inRangeOfFoot
+            race
+                while not isCarrying
+                    sequence
+                        RequestFoodPath
+                        Running
+                        while isCarrying
+                            Succeed
+                while isCarrying
+                    sequence
+                        RequestPathHome
+                        Running
+        while inRangeOfFoot
             sequence
-                RequestPathHome
-                Running
-        while not isCarrying
-            Succeed
-            
-tree("Scavange")
-    sequence
-        while not isCarrying
-            sequence
-                RequestFoodPath
-                Running
-        while isCarrying
-            Succeed
+                Flee
+                Hide

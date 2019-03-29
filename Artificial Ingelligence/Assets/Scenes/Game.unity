@@ -436,6 +436,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &156209381 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100002, guid: d7c80af28e2814b81bba01ba04ef25b6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1898975749}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &156209382
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156209381}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.9863284, y: 1, z: 6.0093246}
+  m_Center: {x: -0.06192887, y: 1, z: -0.05504775}
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,6 +1047,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 807550462, guid: eb35c135dd5444bd6a3f2bf3c038bad5, type: 3}
+      propertyPath: scripts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 807550462, guid: eb35c135dd5444bd6a3f2bf3c038bad5, type: 3}
+      propertyPath: sourceInfos.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 807550462, guid: eb35c135dd5444bd6a3f2bf3c038bad5, type: 3}
+      propertyPath: sourceInfos.Array.data[1].isFoldout
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 807550462, guid: eb35c135dd5444bd6a3f2bf3c038bad5, type: 3}
+      propertyPath: scripts.Array.data[1]
+      value: 
+      objectReference: {fileID: 4900000, guid: 6f00fbbfbc92048ea9032408a2912707, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb35c135dd5444bd6a3f2bf3c038bad5, type: 3}
 --- !u!1 &867604953
@@ -2717,7 +2752,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: d7c80af28e2814b81bba01ba04ef25b6, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Foot
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: d7c80af28e2814b81bba01ba04ef25b6, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: d7c80af28e2814b81bba01ba04ef25b6, type: 3}
       propertyPath: m_Name
@@ -2726,6 +2765,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: d7c80af28e2814b81bba01ba04ef25b6, type: 3}
       propertyPath: m_TagString
       value: Foot
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: d7c80af28e2814b81bba01ba04ef25b6, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: d7c80af28e2814b81bba01ba04ef25b6, type: 3}
       propertyPath: m_LocalPosition.x
