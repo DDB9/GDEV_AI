@@ -5,6 +5,7 @@ using UnityEngine;
 public class TileGrid : MonoBehaviour {
 
     public bool displayGridGizmos;
+    public bool isFleeing;
     public LayerMask wallMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
@@ -35,8 +36,10 @@ public class TileGrid : MonoBehaviour {
                 Vector3 worldPoint = bottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
 
                 bool isWall = false;
-                if (Physics.CheckSphere(worldPoint, nodeRadius, wallMask)) {    // checks for colliders on the wall layermask.
-                    isWall = true;  //if so, set to true.
+                if (!isFleeing){
+                    if (Physics.CheckSphere(worldPoint, nodeRadius, wallMask)) {    // checks for colliders on the wall layermask.
+                        isWall = true;  //if so, set to true.
+                    }
                 }
 
                 Grid[x, y] = new Tile(isWall, worldPoint, x, y);  // Creating the tile as wall or not.

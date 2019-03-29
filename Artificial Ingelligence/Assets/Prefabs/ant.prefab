@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 1707337526}
   - component: {fileID: 1707337525}
   - component: {fileID: 1707337524}
-  - component: {fileID: 1707337527}
+  - component: {fileID: 807550462}
   m_Layer: 0
   m_Name: ant
   m_TagString: Insect
@@ -221,7 +221,7 @@ MonoBehaviour:
   speed: 10
   carrying: 0
   foodLoot: {fileID: 1484518808}
---- !u!114 &1707337527
+--- !u!114 &807550462
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scripts:
-  - {fileID: 0}
+  - {fileID: 4900000, guid: da761942cba024297a9ea9e724d745c2, type: 3}
   autoReset: 1
   tickOn: 0
   sourceInfos:
