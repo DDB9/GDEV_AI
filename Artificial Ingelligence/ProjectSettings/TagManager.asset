@@ -7,8 +7,9 @@ TagManager:
   - Food
   - Home
   - Obstacle
-  - Insect
   - Foot
+  - Beetle
+  - Ant
   layers:
   - Default
   - TransparentFX

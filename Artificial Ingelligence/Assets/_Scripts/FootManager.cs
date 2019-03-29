@@ -20,8 +20,12 @@ public class FootManager : MonoBehaviour
             StartCoroutine(CameraShake(0.15f, 0.4f));
             
             foreach (Collider col in colliders) {
-                if (col.CompareTag("Insect")) {
+                if (col.CompareTag("Ant")) {
                     Destroy(col.gameObject);
+                }
+                else if (col.CompareTag("Beetle")) {
+                    col.GetComponent<Beetle>().stompedOn = true;
+                    col.GetComponent<Beetle>().health -= 1;
                 }
             }
         }

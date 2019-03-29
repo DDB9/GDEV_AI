@@ -61,4 +61,17 @@ public class Unit : MonoBehaviour
             }
         }
     }
+
+    void OnTriggerEnter(Collider other) {
+
+        if (other.CompareTag("Food")) { // If the insect has aquired food...
+            carrying = true;
+            foodLoot.SetActive(true);
+        }
+        
+        if (other.CompareTag("Home") && carrying) {  // If the insect has arrived safely at home and has some food...
+            Destroy(this.gameObject);        // Ruthless smh...
+            // Deduct some points.
+        }
+    }
 }

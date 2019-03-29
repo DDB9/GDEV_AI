@@ -5,24 +5,6 @@ using Panda;
 
 public class Ant : Unit {
 
-    void OnTriggerEnter(Collider other) {
-
-        if (other.CompareTag("Food")) { // If the ant has aquired food...
-            carrying = true;
-            foodLoot.SetActive(true);
-        }
-        
-        if (other.CompareTag("Home") && carrying) {  // If the ant has arrived safely at home and has some food...
-            Destroy(this.gameObject);        // Ruthless smh...
-            // Deduct some points.
-        }
-    }
-
-    [Task]
-    void DebugNode() {
-        Debug.Log("Debug node reached");
-    }
-
     [Task]
     void RequestFoodPath() {    // Requests a path to the objective.
         targetFood = GameObject.FindGameObjectWithTag("Food").transform;
@@ -67,7 +49,7 @@ public class Ant : Unit {
    
     [Task]
     void Flee() {   // Unit Flees to a random direction.
-        PathRequestManager.RequestPath(transform.position, Random.insideUnitCircle * 3, OnPathFound);
+        PathRequestManager.RequestPath(transform.position, Random.insideUnitCircle * 5, OnPathFound);
         Task.current.Succeed();
     }
 

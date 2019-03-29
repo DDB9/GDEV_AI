@@ -13,6 +13,5 @@ tree("Root")
                         RequestPathHome
                         Running
         while inRangeOfFoot
-            sequence
-                Flee
-                Succeed
+            fallback
+                Enrage

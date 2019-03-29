@@ -20,12 +20,12 @@ public class InsectSpawner : MonoBehaviour
     }
 
     void SpawnEnemy() {
-        int randomNumber = Random.Range(0, 1);
+        int randomNumber = Random.Range(0, 2);
         if (randomNumber == 0){
             Instantiate(ant, spawnPoints[Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
         }
         else if (randomNumber == 1){
-            return;
+            Instantiate(beetle, spawnPoints[Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
         }
         
     }
